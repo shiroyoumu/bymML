@@ -9,12 +9,25 @@ hostList = ['host0001', 'host0021', 'host0027', 'host0029', 'host0030', 'host003
 series = "cpuusagebyproc"
 
 def scaling(df, scaling_upper_bound=100) -> (pd.DataFrame, float):
+    '''
+    对Mean数据进行缩放：将数据中最大值缩放至scaling_upper_bound
+
+    :param df: 数据
+    :param scaling_upper_bound: 缩放上界
+    :return: 缩放后的数据
+    '''
     maximum = df['Mean'].max()
     if maximum > 0:
         df['Mean'] = df['Mean'].apply(lambda x: (x / maximum) * scaling_upper_bound)
     return df, maximum
 
 def preProcess(host, series) -> pd.DataFrame:
+    '''
+    对host主机中的series指标进行预处理：进行缩放、限定时间范围、补齐空缺
+    :param host: 主机
+    :param series: 指标
+    :return: 预处理后的数据
+    '''
     df = dataSet    # 读数据集
     df = df.loc[(df["hostname"] == host) & (df["series"] == series)]
     df, maxMean = scaling(df, 100)  # 对Mean缩放
