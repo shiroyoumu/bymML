@@ -30,7 +30,7 @@ if __name__ == '__main__':
     np.random.seed(3)
     # 加载数据
     con = lite.connect(pathDataDB)
-    df = pd.read_sql("select Mean from datasetDB where hostname='host0001'", con)
+    df = pd.read_sql("select Mean from datasetDB where hostname='host0492'", con)
     dataset = df.values.astype("float32")
     # 分割
     trainSize = int(len(dataset) * rate)
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
     # 构建LSTM
     model = Sequential()
-    model.add(LSTM(300, input_shape=(1, step)))
+    model.add(LSTM(30, input_shape=(1, step)))
     model.add(Dense(1))
     model.compile(loss='mse', optimizer='adam')
     model.fit(trainX, trainY, epochs=500, batch_size=50, verbose=1)
