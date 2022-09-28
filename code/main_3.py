@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 from keras.models import Sequential
-from keras.layers import Dense, LSTM, ConvLSTM1D, Dropout
+from keras.layers import *
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 import pandas as pd
@@ -12,8 +12,8 @@ import sqlite3 as lite
 pathDataDB = "../data/dataset_db.db"    # 数据库文件
 
 rate = 0.67     # 数据分割比例
-step = 7      # 预测步长， 168 -> 1
-host = '0021'
+step = 24       # 预测步长， 168 -> 1
+host = '0070'   #
 
 
 def CollectData(dataset, step):
@@ -40,11 +40,17 @@ if __name__ == '__main__':
     trainX, trainY = CollectData(train, step)
     testX, testY = CollectData(test, step)
     # 整理成LSTM需要的格式
-    trainX = np.reshape(trainX, (trainX.shape[0], 1, trainX.shape[1]))
-    testX = np.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
+    trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
+    testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
     # 构建LSTM
     model = Sequential()
-    model.add(LSTM(168, return_sequences=True, input_shape=(1, step)))
+    model.add(Conv1D(4, 3, activation='relu', input_shape=(step, 1)))
+    model.add(Conv1D(4, 3, activation='relu'))
+    model.add(MaxPool1D(2))
+    model.add(Flatten())
+
+    model.add(Reshape((1, model.output_shape[1])))
+    model.add(LSTM(168, return_sequences=True))
     model.add(LSTM(168, return_sequences=True))
     model.add(LSTM(168))
     model.add(Dense(10))
