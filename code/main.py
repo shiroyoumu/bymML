@@ -4,7 +4,6 @@ import math
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
-from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 import pandas as pd
 import sqlite3 as lite
@@ -14,7 +13,6 @@ pathDataDB = "./data/dataset_db.db"    # 数据库文件
 
 rate = 0.67     # 数据分割比例
 step = 168      # 预测步长， 168 -> 1
-
 
 
 def CollectData(dataset, step):
@@ -48,7 +46,7 @@ if __name__ == '__main__':
     model.add(LSTM(20, input_shape=(1, step)))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
-    model.fit(trainX, trainY, epochs=2000, batch_size=50, verbose=2)
+    model.fit(trainX, trainY, epochs=500, batch_size=50, verbose=2)
     # 对训练数据的Y进行预测
     trainPredict = model.predict(trainX)
     # 对测试数据的Y进行预测

@@ -2,8 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import LSTM
+from keras.layers import Dense, LSTM, ConvLSTM1D, Dropout
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 import pandas as pd
@@ -13,8 +12,8 @@ import sqlite3 as lite
 pathDataDB = "../data/dataset_db.db"    # 数据库文件
 
 rate = 0.67     # 数据分割比例
-step = 168      # 预测步长， 168 -> 1
-
+step = 7      # 预测步长， 168 -> 1
+host = '6525'
 
 
 def CollectData(dataset, step):
@@ -30,7 +29,7 @@ if __name__ == '__main__':
     np.random.seed(3)
     # 加载数据
     con = lite.connect(pathDataDB)
-    df = pd.read_sql("select Mean from datasetDB where hostname='host0492'", con)
+    df = pd.read_sql("select Mean from datasetDB where hostname='host{}'".format(host), con)
     dataset = df.values.astype("float32")
     # 分割
     trainSize = int(len(dataset) * rate)
@@ -45,10 +44,14 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
     # 构建LSTM
     model = Sequential()
-    model.add(LSTM(30, input_shape=(1, step)))
+    model.add(LSTM(168, return_sequences=True, input_shape=(1, step)))
+    model.add(LSTM(168, return_sequences=True))
+    model.add(LSTM(168))
+    model.add(Dense(10))
+    model.add(Dropout(0.2))
     model.add(Dense(1))
     model.compile(loss='mse', optimizer='adam')
-    model.fit(trainX, trainY, epochs=500, batch_size=50, verbose=1)
+    model.fit(trainX, trainY, epochs=500, batch_size=64, verbose=2)
     # 对训练数据的Y进行预测
     trainPredict = model.predict(trainX)
     # 对测试数据的Y进行预测
