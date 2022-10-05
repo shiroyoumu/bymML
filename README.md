@@ -13,3 +13,6 @@
 **main_5**：1CNN、1BiLSTM、2LSTM、1GRU、1LSTM
 
 ~~**main_6**：multi host retrain~~
+
+**main_7**：multi host concat(2CNN、1BiLSTM、2LSTM、1GRU、1LSTM)
+
