@@ -16,3 +16,6 @@
 
 **main_7**：multi host concat(2CNN、1BiLSTM、2LSTM、1GRU、1LSTM)
 
+**main_8**：multi host concat(2CNN、3LSTM)
+contrast
+**main_9**：multi host concat(2CNN、3LSTM)

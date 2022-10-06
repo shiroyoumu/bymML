@@ -1,11 +1,10 @@
 import numpy
 import numpy as np
+import torch
+from os.path import basename
+import torch.nn as nn
 
-a = numpy.array([[1,],
-               [4,],
-               [7,]])
-b = numpy.array([[2,],
-               [5,],
-               [8,]])
 
-print(np.append(a, b, axis=0))
+print(basename(__file__))
+
+

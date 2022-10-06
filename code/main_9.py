@@ -7,13 +7,14 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 import pandas as pd
 import sqlite3 as lite
+from os.path import basename
 
 # 文件声明
 pathDataDB = "../data/dataset_db.db"    # 数据库文件
 
-step = 168       # 预测步长
+step = 7       # 预测步长
 host = ['0001', '0021', '0070', '0143', '0354', '0372']   #
-host2 = ['9783']    # 9783、9605、2636、1046、
+host2 = ['1046']    # 9783、9605、2636、1046、
 
 def CollectTrainData(con, host) -> pd.DataFrame:
     dataset = pd.DataFrame()
@@ -45,20 +46,16 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
     # 构建网络
     model = Sequential()
-    model.add(Conv1D(4, 3, activation='relu', input_shape=(step, 1)))
-    model.add(Conv1D(4, 3, activation='relu'))
-    model.add(MaxPool1D(2))
-    model.add(Flatten())
-
-    model.add(Reshape((1, model.output_shape[1])))
-    model.add(Bidirectional(LSTM(168, return_sequences=True)))
-    model.add(LSTM(168, return_sequences=True))
-    model.add(LSTM(168, return_sequences=True))
-    model.add(GRU(168, return_sequences=True))
-    model.add(LSTM(168))
+    model.add(Dense((4 * step), input_shape=(step, )))
+    model.add(Dropout(0.1))
+    model.add(Dense(2 * step))
+    model.add(Dense(step))
     model.add(Dense(1))
+    model.add(ReLU())
+    print(model.input_shape, model.output_shape)
+
     model.compile(loss='mse', optimizer='adam')
-    model.fit(trainX, trainY, epochs=500, batch_size=64, verbose=2)
+    model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=2)
     # 对测试数据的Y进行预测
     testPre = model.predict(testX)
     # 整理
@@ -68,8 +65,9 @@ if __name__ == '__main__':
     testScore = math.sqrt(mean_squared_error(testY[0], testPre[:, 0]))
     print('Test Score: %.2f RMSE' % (testScore))
 
+    plt.suptitle("host{} in {}".format(host2[0], basename(__file__)))
     plt.plot(testSet)
-    empty = np.empty((168, 1))
+    empty = np.empty((step, 1))
     empty[:, :] = np.nan
     plt.plot(np.append(empty, testPre, axis=0))
     plt.show()

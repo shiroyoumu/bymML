@@ -1,0 +1,47 @@
+====== main_8 ======
+step = 168       # 预测步长
+host = ['0001', '0021', '0070', '0143', '0354', '0372']   #
+host2 = ['9605']    # 9783、9605、2636、1046、
+####################
+model = Sequential()
+model.add(Conv1D(4, 3, activation='relu', input_shape=(step, 1)))
+model.add(Conv1D(4, 3, activation='relu'))
+model.add(MaxPool1D(2))
+model.add(Flatten())
+model.add(Reshape((1, model.output_shape[1])))
+model.add(LSTM(168, return_sequences=True))
+model.add(LSTM(168, return_sequences=True))
+model.add(LSTM(168))
+model.add(Dense(10))
+model.add(Dropout(0.2))
+model.add(Dense(1))
+model.compile(loss='mse', optimizer='adam')
+model.fit(trainX, trainY, epochs=500, batch_size=64, verbose=2)
+####################
+Epoch 500/500
+155/155 - 1s - loss: 19.6484 - 1s/epoch - 7ms/step
+48/48 [==============================] - 1s 3ms/step
+Test Score: 12.38 RMSE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
