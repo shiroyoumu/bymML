@@ -8,6 +8,7 @@ from sklearn.metrics import mean_squared_error
 import pandas as pd
 import sqlite3 as lite
 from os.path import basename
+from tcn import TCN, tcn_full_summary
 
 # 文件声明
 pathDataDB = "../data/dataset_db.db"    # 数据库文件
@@ -46,20 +47,9 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
     # 构建网络
     model = Sequential()
-    model.add(Conv1D(4, 3, activation='relu', input_shape=(step, 1)))
-    model.add(Conv1D(4, 3, activation='relu'))
-    model.add(MaxPool1D(2))
-    model.add(Flatten())
-
-    model.add(Reshape((1, model.output_shape[1])))
-    model.add(Bidirectional(LSTM(168, return_sequences=True)))
-    model.add(LSTM(168, return_sequences=True))
-    model.add(LSTM(168, return_sequences=True))
-    model.add(GRU(168, return_sequences=True))
-    model.add(LSTM(168))
+    model.add(TCN(128, kernel_size=3, dropout_rate=0.05, dilations=(1, 2, 4)))
     model.add(Dense(1))
     model.compile(loss='mse', optimizer='adam')
-    model.summary()
     model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=2)
     # 对测试数据的Y进行预测
     testPre = model.predict(testX)

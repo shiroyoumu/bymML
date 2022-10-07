@@ -18,4 +18,8 @@
 
 **main_8**：multi host concat(2CNN、3LSTM)
 contrast
-**main_9**：multi host concat(2CNN、3LSTM)
+**main_9**：multi host concat(4FC)
+
+**main_10**：demo for TCN
+
+**main_11**：multi host concat(1TCN)

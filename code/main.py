@@ -46,9 +46,10 @@ if __name__ == '__main__':
     model.add(LSTM(20, input_shape=(1, step)))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
-    model.fit(trainX, trainY, epochs=500, batch_size=50, verbose=2)
+    model.fit(trainX, trainY, epochs=5, batch_size=50, verbose=2)
     # 对训练数据的Y进行预测
     trainPredict = model.predict(trainX)
+    print(model.output_shape)
     # 对测试数据的Y进行预测
     testPredict = model.predict(testX)
     # 整理

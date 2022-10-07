@@ -14,7 +14,7 @@ pathDataDB = "../data/dataset_db.db"    # 数据库文件
 
 step = 7       # 预测步长
 host = ['0001', '0021', '0070', '0143', '0354', '0372']   #
-host2 = ['1046']    # 9783、9605、2636、1046、
+host2 = ['6707']    # 9783、9605、2636、1046、
 
 def CollectTrainData(con, host) -> pd.DataFrame:
     dataset = pd.DataFrame()
@@ -52,8 +52,6 @@ if __name__ == '__main__':
     model.add(Dense(step))
     model.add(Dense(1))
     model.add(ReLU())
-    print(model.input_shape, model.output_shape)
-
     model.compile(loss='mse', optimizer='adam')
     model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=2)
     # 对测试数据的Y进行预测
