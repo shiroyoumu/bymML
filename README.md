@@ -24,6 +24,4 @@ contrast
 
 **main_11**：multi host concat(1TCN)
 
-**main_12**：test seq2seq
-
 

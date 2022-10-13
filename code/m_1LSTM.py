@@ -4,13 +4,15 @@ import math
 from keras.models import Sequential
 from keras.layers import *
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import *
 import pandas as pd
 import sqlite3 as lite
 from os.path import basename
+from tcn import TCN, tcn_full_summary
 
 # 文件声明
 pathDataDB = "../data/dataset_db.db"    # 数据库文件
+pathLog = "../log/{}.{}"    # 输出结果
 
 step = 7       # 预测步长
 host = ['0001', '0021', '0070', '0143', '0354', '0372']   #
@@ -31,6 +33,10 @@ def CollectData(dataset, step):
         dataY.append(dataset[i + step, 0])
     return np.array(dataX), np.array(dataY)
 
+def WriteSummary(text):
+    with open(pathLog.format(name, "txt"), 'w') as f:
+        f.write(text)
+
 if __name__ == '__main__':
     # 定义随机种子，以便重现结果
     np.random.seed(3)
@@ -44,33 +50,38 @@ if __name__ == '__main__':
     # 整理格式
     trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
+
+    name = "1LSTM"
     # 构建网络
     model = Sequential()
-    model.add(Conv1D(4, 3, activation='relu', input_shape=(step, 1)))
-    model.add(Conv1D(4, 3, activation='relu'))
-    model.add(MaxPool1D(2))
-    model.add(Flatten())
-
-    model.add(Reshape((1, model.output_shape[1])))
-    model.add(LSTM(168, return_sequences=True))
-    model.add(LSTM(168))
+    model.add(LSTM(168, return_sequences=False))
     model.add(Dense(1))
     model.compile(loss='mse', optimizer='adam')
-    model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=2)
+    model.fit(trainX, trainY, epochs=5, batch_size=64, verbose=2)
     # 对测试数据的Y进行预测
     testPre = model.predict(testX)
     # 整理
     trainY = np.reshape(trainY, (1, trainY.shape[0]))
     testY = np.reshape(testY, (1, testY.shape[0]))
     # 计算RMSE误差
-    testScore = math.sqrt(mean_squared_error(testY[0], testPre[:, 0]))
-    print('Test Score: %.2f RMSE' % (testScore))
+    rmse = math.sqrt(mean_squared_error(testY[0], testPre[:, 0]))
+    mse = mean_squared_error(testY[0], testPre[:, 0])
+    evs = explained_variance_score(testY[0], testPre[:, 0])
+    r2 = r2_score(testY[0], testPre[:, 0])
 
-    plt.suptitle("host{} in {}".format(host2[0], basename(__file__)))
+    with open(pathLog.format(name, "txt"), 'w') as f:
+        model.summary(print_fn=lambda x: f.write(x + '\n'))
+        f.write("RMSE = {:.4f}\n".format(rmse))
+        f.write("MSE = {:.4f}\n".format(mse))
+        f.write("EVS = {:.4f}\n".format(evs))
+        f.write("R2 = {:.4f}\n".format(r2))
+
+    plt.suptitle("host{} in {}".format(host2[0], name))
     plt.plot(testSet)
-    empty = np.empty((step, 1))
+    empty = np.empty((step - 1, 1))
     empty[:, :] = np.nan
     plt.plot(np.append(empty, testPre, axis=0))
+    plt.savefig(pathLog.format(name, "png"))
     plt.show()
 
 

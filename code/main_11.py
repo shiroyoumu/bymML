@@ -47,10 +47,10 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
     # 构建网络
     model = Sequential()
-    model.add(TCN(168, kernel_size=3, dropout_rate=0.05, dilations=(1, 2, 4)))
+    model.add(TCN(7, kernel_size=3, dropout_rate=0.05, dilations=(1, 2, 4)))
     model.add(Dense(1))
     model.compile(loss='mse', optimizer='adam')
-    model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=2)
+    model.fit(trainX, trainY, epochs=5, batch_size=64, verbose=2)
     # 对测试数据的Y进行预测
     testPre = model.predict(testX)
     # 整理
