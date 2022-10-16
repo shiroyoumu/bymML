@@ -33,9 +33,11 @@ def CollectTrainData(con, host) -> pd.DataFrame:
     :return: host对应的数据
     '''
     dataset = pd.DataFrame()
+    n = len(host)
     for i in host:
         df = pd.read_sql("select Mean from datasetDB where hostname='{}'".format(i), con)
         dataset = dataset.append(df, ignore_index=True)
+        print("Loading Data... {} of {}".format(host.index(i), n))
     dataset = dataset.values.astype("float32")
     return dataset
 
