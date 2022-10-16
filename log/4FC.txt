@@ -1,0 +1,27 @@
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 28)                224       
+                                                                 
+ dropout (Dropout)           (None, 28)                0         
+                                                                 
+ dense_1 (Dense)             (None, 14)                406       
+                                                                 
+ dense_2 (Dense)             (None, 7)                 105       
+                                                                 
+ dense_3 (Dense)             (None, 1)                 8         
+                                                                 
+ re_lu (ReLU)                (None, 1)                 0         
+                                                                 
+=================================================================
+Total params: 743
+Trainable params: 743
+Non-trainable params: 0
+_________________________________________________________________
+MSE = 42.9891
+RMSE = 6.5566
+SSE = 7221874.5216
+MAE = 2.5791
+MAPE = 275023298560.0000
+R2 = 0.8777

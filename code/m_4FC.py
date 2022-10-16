@@ -91,10 +91,14 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 
     # 构建网络
-    name = "1LSTM"
+    name = "4FC"
     model = Sequential()
-    model.add(LSTM(168, return_sequences=False))
+    model.add(Dense((4 * step), input_shape=(step,)))
+    model.add(Dropout(0.1))
+    model.add(Dense(2 * step))
+    model.add(Dense(step))
     model.add(Dense(1))
+    model.add(ReLU())
     model.compile(loss='mse', optimizer='adam')
     model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=2)
     # 对测试数据的Y进行预测

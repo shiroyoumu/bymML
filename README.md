@@ -24,4 +24,8 @@ contrast
 
 **main_11**：multi host concat(1TCN)
 
+**m_?**：model for all cpu sequences
+
+
+
 

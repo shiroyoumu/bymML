@@ -30,13 +30,17 @@ import graphviz
 # c = Concatenate(axis=0)([a, b])
 # print(c)
 
-fileName = '../log/notebook.txt'
-with open(fileName, 'w') as file:
-    file.write('average')
-    file.write('123')
+import random
+random.seed(3)
 
+li=[5,4,3,2,1,5,4,3,2,1]
 
+# random.shuffle(li)
+flag = int(len(li) * 0.75)
+host1 = li[:flag]
+host2 = li[flag:]
 
+print(li)
 
 
 
