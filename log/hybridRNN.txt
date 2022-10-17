@@ -2,38 +2,29 @@ Model: "sequential"
 _________________________________________________________________
  Layer (type)                Output Shape              Param #   
 =================================================================
- conv1d (Conv1D)             (None, 5, 4)              16        
+ conv1d (Conv1D)             (None, 12, 64)            384       
                                                                  
- conv1d_1 (Conv1D)           (None, 3, 4)              52        
-                                                                 
- max_pooling1d (MaxPooling1D  (None, 1, 4)             0         
- )                                                               
-                                                                 
- flatten (Flatten)           (None, 4)                 0         
-                                                                 
- reshape (Reshape)           (None, 1, 4)              0         
-                                                                 
- bidirectional (Bidirectiona  (None, 1, 336)           232512    
+ bidirectional (Bidirectiona  (None, 12, 128)          66048     
  l)                                                              
                                                                  
- lstm_1 (LSTM)               (None, 1, 168)            339360    
+ lstm_1 (LSTM)               (None, 12, 64)            49408     
                                                                  
- lstm_2 (LSTM)               (None, 1, 168)            226464    
+ lstm_2 (LSTM)               (None, 12, 64)            33024     
                                                                  
- gru (GRU)                   (None, 1, 168)            170352    
+ gru (GRU)                   (None, 12, 64)            24960     
                                                                  
- lstm_3 (LSTM)               (None, 168)               226464    
+ lstm_3 (LSTM)               (None, 50)                23000     
                                                                  
- dense (Dense)               (None, 1)                 169       
+ dense (Dense)               (None, 1)                 51        
                                                                  
 =================================================================
-Total params: 1,195,389
-Trainable params: 1,195,389
+Total params: 196,875
+Trainable params: 196,875
 Non-trainable params: 0
 _________________________________________________________________
-MSE = 61.1658
-RMSE = 7.8209
-SSE = 10275431.7025
-MAE = 3.2350
-MAPE = 118179258368.0000
-R2 = 0.8259
+MSE = 204.1217
+RMSE = 14.2871
+SSE = 3083054.4492
+MAE = 12.3865
+MAPE = 5.9384
+R2 = -0.7609

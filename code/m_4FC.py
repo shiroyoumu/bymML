@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import math
 from keras.models import Sequential
 from keras.layers import *
-from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import *
 import pandas as pd
 import sqlite3 as lite
@@ -12,6 +11,7 @@ from tcn import TCN, tcn_full_summary
 import os
 import random
 import tensorflow as tf
+from functions import CollectTrainData, CollectData, SelectHosts
 
 # 文件声明
 pathDataDB = "../data/dataset_db.db"    # 数据库文件
@@ -23,56 +23,6 @@ hosts = ['host0001', 'host0021', 'host0027', 'host0029', 'host0030', 'host0035',
 # hosts = ['host0001', 'host0021', 'host0027', 'host0029', 'host0030', 'host0035', 'host0039', 'host0041', 'host0049', 'host0056', 'host0057', 'host0063', 'host0070', 'host0073', 'host0079', 'host0081', 'host0118', 'host0131', 'host0143', 'host0150', 'host0167', 'host0171', 'host0175', 'host0194', 'host0196', 'host0204', 'host0210', 'host0218']
 rate = 0.9  # 分割率
 
-def CollectTrainData(con, host) -> pd.DataFrame:
-    '''
-
-    从数据库收集数据
-
-    :param con: 数据库控制器
-    :param host: 收集数据的主机号
-    :return: host对应的数据
-    '''
-    dataset = pd.DataFrame()
-    n = len(host)
-    for i in host:
-        df = pd.read_sql("select Mean from datasetDB where hostname='{}'".format(i), con)
-        dataset = dataset.append(df, ignore_index=True)
-        print("\rLoading Data From DB... {} of {}".format(host.index(i), n), end="")
-    dataset = dataset.values.astype("float32")
-    return dataset
-
-def CollectData(dataset, step) -> np.array:
-    '''
-    将数据序列dataset按step划分为输入和标签
-
-    例如：
-
-    >>> dataset = np.arange(6).reshape(6, 1)
-    >>> step = 3
-    >>> X, Y = CollectData(dataset, step)
-    >>> X
-    array([[0, 1, 2],
-           [1, 2, 3],
-           [2, 3, 4]])
-    >>> Y
-    array([3, 4, 5])
-    :param dataset:数据序列
-    :param step:步长
-    :return:分割好的输入与标签
-    '''
-    dataX, dataY = [], []
-    for i in range(len(dataset) - step):
-        dataX.append(dataset[i:(i + step), 0])
-        dataY.append(dataset[i + step, 0])
-    return np.array(dataX), np.array(dataY)
-
-def SelectHosts(hosts) -> tuple:
-    random.shuffle(hosts)
-    flag = int(len(hosts) * rate)
-    host1 = hosts[:flag]
-    host2 = hosts[flag:]
-    return host1, host2
-
 if __name__ == '__main__':
     # 定义随机种子，以便重现结果
     np.random.seed(seed)  # seed是一个固定的整数即可
@@ -80,7 +30,7 @@ if __name__ == '__main__':
     os.environ['PYTHONHASHSEED'] = str(seed)
     tf.random.set_seed(seed)
     # 分割数据
-    host1, host2 = SelectHosts(hosts)
+    host1, host2 = SelectHosts(hosts, rate, seed)
     # 加载数据
     con = lite.connect(pathDataDB)
     trainSet = CollectTrainData(con, host1)
