@@ -36,9 +36,10 @@ def CollectData(dataset, step) -> Tuple[ndarray, ndarray]:
            [2, 3, 4]])
     >>> Y
     array([3, 4, 5])
+
     :param dataset:数据序列
     :param step:步长
-    :return:分割好的输入与标签
+    :return:输入列表，对应标签列表
     '''
     dataX, dataY = [], []
     for i in range(len(dataset) - step):
@@ -47,6 +48,14 @@ def CollectData(dataset, step) -> Tuple[ndarray, ndarray]:
     return np.array(dataX), np.array(dataY)
 
 def SelectHosts(hosts, rate, seed) -> Tuple[List, List]:
+    '''
+    选取训练和测试的主机
+
+    :param hosts: 全部主机列表
+    :param rate: 分割比例（作为训练集）
+    :param seed: 随机种子
+    :return: 训练主机列表，测试主机列表
+    '''
     random.seed(seed)
     random.shuffle(hosts)
     flag = int(len(hosts) * rate)
