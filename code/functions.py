@@ -15,13 +15,10 @@ def CollectTrainData(con, host) -> ndarray:
     :param host: 收集数据的主机号
     :return: host对应的数据
     '''
-    dataset = pd.DataFrame()
-    n = len(host)
-    for i in host:
-        df = pd.read_sql("select Mean from datasetDB where hostname='{}'".format(i), con)
-        dataset = dataset.append(df, ignore_index=True)
-        print("\rLoading Data From DB... {} of {}".format(host.index(i), n), end="")
+    print("Loading data from DB...")
+    dataset = pd.read_sql("select Mean from datasetDB where hostname in {}".format(str(tuple(host))), con)
     dataset = dataset.values.astype("float32")
+    print("Done")
     return dataset
 
 def CollectData(dataset, step) -> Tuple[ndarray, ndarray]:

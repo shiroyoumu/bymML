@@ -2,16 +2,16 @@ Model: "sequential"
 _________________________________________________________________
  Layer (type)                Output Shape              Param #   
 =================================================================
- conv1d (Conv1D)             (None, 12, 64)            384       
+ conv1d (Conv1D)             (None, 3, 64)             384       
                                                                  
- bidirectional (Bidirectiona  (None, 12, 128)          66048     
+ bidirectional (Bidirectiona  (None, 3, 128)           66048     
  l)                                                              
                                                                  
- lstm_1 (LSTM)               (None, 12, 64)            49408     
+ lstm_1 (LSTM)               (None, 3, 64)             49408     
                                                                  
- lstm_2 (LSTM)               (None, 12, 64)            33024     
+ lstm_2 (LSTM)               (None, 3, 64)             33024     
                                                                  
- gru (GRU)                   (None, 12, 64)            24960     
+ gru (GRU)                   (None, 3, 64)             24960     
                                                                  
  lstm_3 (LSTM)               (None, 50)                23000     
                                                                  
@@ -22,9 +22,9 @@ Total params: 196,875
 Trainable params: 196,875
 Non-trainable params: 0
 _________________________________________________________________
-MSE = 204.1217
-RMSE = 14.2871
-SSE = 3083054.4492
-MAE = 12.3865
-MAPE = 5.9384
-R2 = -0.7609
+MSE = 75.1122
+RMSE = 8.6667
+SSE = 378039.7687
+MAE = 3.8776
+MAPE = 0.2569
+R2 = 0.5870

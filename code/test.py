@@ -1,6 +1,7 @@
 import numpy
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 import torch
 from os.path import basename
 import torch.nn as nn
@@ -32,25 +33,16 @@ import math
 # c = Concatenate(axis=0)([a, b])
 # print(c)
 
-import random
-random.seed(3)
+import sqlite3 as lite
 
-Y = np.array([1, 2, 3, 4, 5])
-Y_ = np.array([3, 3, 3, 3, 3])
+hosts = ['host0001', 'host0021', 'host0027', 'host0029']
+con = lite.connect("../data/dataset_db.db")
+df = pd.read_sql("select Mean from datasetDB where hostname in {}".format(str(tuple(hosts))), con)
 
-mse = mean_squared_error(Y, Y_)  # 均方误差
-rmse = math.sqrt(mse)  # 均方根误差
-sse = len(Y) * mse  # 和方差
-mae = mean_absolute_error(Y, Y_)  # 平均绝对误差
-mape = mean_absolute_percentage_error(Y, Y_)
-r2 = r2_score(Y, Y_)  # r2分数（越接近+1越好）
+None
 
-print("MSE = {:.4f}".format(mse))
-print("RMSE = {:.4f}".format(rmse))
-print("SSE = {:.4f}".format(sse))
-print("MAE = {:.4f}".format(mae))
-print("MAPE = {:.4f}".format(mape))
-print("R2 = {:.4f}".format(r2))
+
+
 
 # t = torch.rand(1680)
 # t = torch.reshape(t, (1, 1, 10, 168))

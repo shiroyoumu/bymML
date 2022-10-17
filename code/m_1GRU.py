@@ -43,17 +43,9 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 
     # 构建网络
-    name = "hybridRNN"
+    name = "1GRU"
     model = Sequential()
-    model.add(Conv1D(filters=64, kernel_size=5, activation='relu', input_shape=(step, 1)))
-    # model.add(MaxPool1D(2))
-    # model.add(Flatten())
-    # model.add(Reshape((1, model.output_shape[1])))
-    model.add(Bidirectional(LSTM(64, return_sequences=True)))
-    model.add(LSTM(64, return_sequences=True))
-    model.add(LSTM(64, return_sequences=True))
-    model.add(GRU(64, return_sequences=True))
-    model.add(LSTM(50))
+    model.add(GRU(168, return_sequences=False))
     model.add(Dense(1))
     model.compile(loss='mse', optimizer='adam')
     model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=1)
