@@ -1,0 +1,39 @@
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ conv1d (Conv1D)             (None, 5, 4)              16        
+                                                                 
+ conv1d_1 (Conv1D)           (None, 3, 4)              52        
+                                                                 
+ max_pooling1d (MaxPooling1D  (None, 1, 4)             0         
+ )                                                               
+                                                                 
+ flatten (Flatten)           (None, 4)                 0         
+                                                                 
+ reshape (Reshape)           (None, 1, 4)              0         
+                                                                 
+ bidirectional (Bidirectiona  (None, 1, 336)           232512    
+ l)                                                              
+                                                                 
+ lstm_1 (LSTM)               (None, 1, 168)            339360    
+                                                                 
+ lstm_2 (LSTM)               (None, 1, 168)            226464    
+                                                                 
+ gru (GRU)                   (None, 1, 168)            170352    
+                                                                 
+ lstm_3 (LSTM)               (None, 168)               226464    
+                                                                 
+ dense (Dense)               (None, 1)                 169       
+                                                                 
+=================================================================
+Total params: 1,195,389
+Trainable params: 1,195,389
+Non-trainable params: 0
+_________________________________________________________________
+MSE = 61.1658
+RMSE = 7.8209
+SSE = 10275431.7025
+MAE = 3.2350
+MAPE = 118179258368.0000
+R2 = 0.8259

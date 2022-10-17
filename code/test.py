@@ -13,6 +13,8 @@ from keras.layers import *
 from keras import initializers
 from keras.models import Model
 import graphviz
+from sklearn.metrics import *
+import math
 
 
 # x_test = np.array([[[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]]])
@@ -33,16 +35,22 @@ import graphviz
 import random
 random.seed(3)
 
-li=[5,4,3,2,1,5,4,3,2,1]
+Y = np.array([1, 2, 3, 4, 5])
+Y_ = np.array([3, 3, 3, 3, 3])
 
-# random.shuffle(li)
-flag = int(len(li) * 0.75)
-host1 = li[:flag]
-host2 = li[flag:]
+mse = mean_squared_error(Y, Y_)  # 均方误差
+rmse = math.sqrt(mse)  # 均方根误差
+sse = len(Y) * mse  # 和方差
+mae = mean_absolute_error(Y, Y_)  # 平均绝对误差
+mape = mean_absolute_percentage_error(Y, Y_)
+r2 = r2_score(Y, Y_)  # r2分数（越接近+1越好）
 
-print(li)
-
-
+print("MSE = {:.4f}".format(mse))
+print("RMSE = {:.4f}".format(rmse))
+print("SSE = {:.4f}".format(sse))
+print("MAE = {:.4f}".format(mae))
+print("MAPE = {:.4f}".format(mape))
+print("R2 = {:.4f}".format(r2))
 
 # t = torch.rand(1680)
 # t = torch.reshape(t, (1, 1, 10, 168))

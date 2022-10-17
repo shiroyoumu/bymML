@@ -1,0 +1,114 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+from keras.models import Sequential
+from keras.layers import *
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import mean_squared_error
+import pandas as pd
+import sqlite3 as lite
+from os.path import basename
+from tcn import TCN, tcn_full_summary
+from attention import Attention
+
+# 文件声明
+pathDataDB = "../data/dataset_db.db"    # 数据库文件
+
+step = 7       # 预测步长
+host = ['0001', '0021', '0070', '0143', '0354', '0372']   #
+host2 = ['6707']    # 9783、9605、2636、1046、
+
+def CollectTrainData(con, host) -> pd.DataFrame:
+    '''
+
+    从数据库收集数据
+
+    :param con: 数据库控制器
+    :param host: 收集数据的主机号
+    :return: host对应的数据
+    '''
+    dataset = pd.DataFrame()
+    n = len(host)
+    for i in host:
+        df = pd.read_sql("select Mean from datasetDB where hostname='{}'".format(i), con)
+        dataset = dataset.append(df, ignore_index=True)
+        print("Loading Data... {} of {}".format(host.index(i), n))
+    dataset = dataset.values.astype("float32")
+    return dataset
+
+def CollectData(dataset, step) -> np.array:
+    '''
+    将数据序列dataset按step划分为输入和标签
+
+    例如：
+
+    >>> dataset = np.arange(6).reshape(6, 1)
+    >>> step = 3
+    >>> X, Y = CollectData(dataset, step)
+    >>> X
+    array([[0, 1, 2],
+           [1, 2, 3],
+           [2, 3, 4]])
+    >>> Y
+    array([3, 4, 5])
+    :param dataset:数据序列
+    :param step:步长
+    :return:分割好的输入与标签
+    '''
+    dataX, dataY = [], []
+    for i in range(len(dataset) - step):
+        dataX.append(dataset[i:(i + step), 0])
+        dataY.append(dataset[i + step, 0])
+    return np.array(dataX), np.array(dataY)
+
+if __name__ == '__main__':
+    # 定义随机种子，以便重现结果
+    np.random.seed(3)
+    # 加载数据
+    con = lite.connect(pathDataDB)
+    trainSet = CollectTrainData(con, host)
+    testSet = CollectTrainData(con, host2)
+    # 收集数据
+    trainX, trainY = CollectData(trainSet, step)
+    testX, testY = CollectData(testSet, step)
+    # 整理格式
+    trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
+    testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
+    # 构建网络
+    model = Sequential()
+    model.add(TCN(7, kernel_size=3, dropout_rate=0.05, dilations=(1, 2, 4)))
+    model.add(Dense(1))
+    model.compile(loss='mse', optimizer='adam')
+    model.fit(trainX, trainY, epochs=5, batch_size=64, verbose=2)
+    # 对测试数据的Y进行预测
+    testPre = model.predict(testX)
+    # 整理
+    trainY = np.reshape(trainY, (1, trainY.shape[0]))
+    testY = np.reshape(testY, (1, testY.shape[0]))
+    # 计算RMSE误差
+    testScore = math.sqrt(mean_squared_error(testY[0], testPre[:, 0]))
+    print('Test Score: %.2f RMSE' % (testScore))
+
+    plt.suptitle("host{} in {}".format(host2[0], basename(__file__)))
+    plt.plot(testSet)
+    empty = np.empty((step, 1))
+    empty[:, :] = np.nan
+    plt.plot(np.append(empty, testPre, axis=0))
+    plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

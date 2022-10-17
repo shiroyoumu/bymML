@@ -93,14 +93,20 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 
     # 构建网络
-    name = "4FC"
+    name = "hybridRNN"
     model = Sequential()
-    model.add(Dense((4 * step), input_shape=(step,)))
-    model.add(Dropout(0.1))
-    model.add(Dense(2 * step))
-    model.add(Dense(step))
+    model.add(Conv1D(4, 3, activation='relu', input_shape=(step, 1)))
+    model.add(Conv1D(4, 3, activation='relu'))
+    model.add(MaxPool1D(2))
+    model.add(Flatten())
+
+    model.add(Reshape((1, model.output_shape[1])))
+    model.add(Bidirectional(LSTM(168, return_sequences=True)))
+    model.add(LSTM(168, return_sequences=True))
+    model.add(LSTM(168, return_sequences=True))
+    model.add(GRU(168, return_sequences=True))
+    model.add(LSTM(168))
     model.add(Dense(1))
-    model.add(ReLU())
     model.compile(loss='mse', optimizer='adam')
     model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=2)
     # 对测试数据的Y进行预测
