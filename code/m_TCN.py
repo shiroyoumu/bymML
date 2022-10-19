@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+
+from keras.callbacks import TensorBoard
 from keras.models import Sequential
 from keras.layers import *
 from sklearn.metrics import *
@@ -30,7 +32,7 @@ if __name__ == '__main__':
     os.environ['PYTHONHASHSEED'] = str(seed)
     tf.random.set_seed(seed)
     # 分割数据
-    host1, host2 = SelectHosts(hosts, rate, seed)
+    host1, host2 = SelectHosts(hosts, rate, seed)   # 1训练 2测试
     # 加载数据
     con = lite.connect(pathDataDB)
     trainSet = CollectTrainData(con, host1)
@@ -43,14 +45,10 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 
     # 构建网络
-    name = "4FC"
+    name = "TCN"
     model = Sequential()
-    model.add(Dense((4 * step), input_shape=(step,)))
-    model.add(Dropout(0.1))
-    model.add(Dense(2 * step))
-    model.add(Dense(step))
+    model.add(TCN(nb_filters=64, kernel_size=5, dropout_rate=0.1, dilations=(1, 2, 4, 8, 16, 32)))
     model.add(Dense(1))
-    model.add(ReLU())
     model.compile(loss='mse', optimizer='adam')
     model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=1)
     # 对测试数据的Y进行预测
@@ -85,7 +83,6 @@ if __name__ == '__main__':
     plt.plot(np.append(empty, testPre, axis=0))
     plt.savefig(pathLog.format(name, "png"))
     # plt.show()
-
 
 
 

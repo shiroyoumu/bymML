@@ -48,7 +48,7 @@ if __name__ == '__main__':
     model.add(LSTM(168, return_sequences=False))
     model.add(Dense(1))
     model.compile(loss='mse', optimizer='adam')
-    model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=2)
+    model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=1)
     # 对测试数据的Y进行预测
     testPre = model.predict(testX)
     # 整理

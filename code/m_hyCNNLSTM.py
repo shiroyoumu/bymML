@@ -30,7 +30,7 @@ if __name__ == '__main__':
     os.environ['PYTHONHASHSEED'] = str(seed)
     tf.random.set_seed(seed)
     # 分割数据
-    host1, host2 = SelectHosts(hosts, rate, seed)
+    host1, host2 = SelectHosts(hosts, rate, seed)   # 1训练 2测试
     # 加载数据
     con = lite.connect(pathDataDB)
     trainSet = CollectTrainData(con, host1)
@@ -43,14 +43,17 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 
     # 构建网络
-    name = "4FC"
+    name = "hybridCNN+LSTM"
     model = Sequential()
-    model.add(Dense((4 * step), input_shape=(step,)))
+    model.add(Conv1D(filters=4, kernel_size=3, activation='relu', input_shape=(step, 1)))
+    model.add(Conv1D(filters=4, kernel_size=3, activation='relu'))
+    model.add(MaxPool1D(2))
+    model.add(Flatten())
     model.add(Dropout(0.1))
-    model.add(Dense(2 * step))
-    model.add(Dense(step))
+    model.add(Reshape((1, model.output_shape[1])))
+    model.add(LSTM(64, return_sequences=False))
+    model.add(Dense(10))
     model.add(Dense(1))
-    model.add(ReLU())
     model.compile(loss='mse', optimizer='adam')
     model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=1)
     # 对测试数据的Y进行预测

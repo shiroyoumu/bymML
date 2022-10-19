@@ -21,6 +21,7 @@ def CollectTrainData(con, host) -> ndarray:
     print("Done")
     return dataset
 
+
 def CollectData(dataset, step) -> Tuple[ndarray, ndarray]:
     '''
     将数据序列dataset按step划分为输入和标签
@@ -46,6 +47,7 @@ def CollectData(dataset, step) -> Tuple[ndarray, ndarray]:
         dataX.append(dataset[i:(i + step), 0])
         dataY.append(dataset[i + step, 0])
     return np.array(dataX), np.array(dataY)
+
 
 def SelectHosts(hosts, rate, seed) -> Tuple[List, List]:
     '''
