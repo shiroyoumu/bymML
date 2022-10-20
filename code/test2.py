@@ -20,39 +20,80 @@ from attention import Attention
 from tcn import TCN, tcn_full_summary
 import tensorflow as tf
 
-
-# a = np.arange(3).astype("float32").reshape([1, 3])
-# c = TCN(nb_filters=3, kernel_size=3, dropout_rate=0.1, dilations=(1, 2, 4, 8))(a)
-# c = MyLayer(3)(a)
-
 x = np.arange(10).astype("float32").reshape([1, 10, 1])
-y = Conv1D(filters=1, kernel_size=3, dilation_rate=1, padding="causal", kernel_initializer="Ones")(x)
+y = x
 y = Conv1D(filters=1, kernel_size=3, dilation_rate=1, padding="causal", kernel_initializer="Ones")(y)
+y = Conv1D(filters=1, kernel_size=3, dilation_rate=1, padding="causal", kernel_initializer="Ones")(y)
+z1 = y
+y = w = y + x
 y = Conv1D(filters=1, kernel_size=3, dilation_rate=2, padding="causal", kernel_initializer="Ones")(y)
 y = Conv1D(filters=1, kernel_size=3, dilation_rate=2, padding="causal", kernel_initializer="Ones")(y)
+z2 = y
+y = y + w
+y = Conv1D(filters=1, kernel_size=3, dilation_rate=4, padding="causal", kernel_initializer="Ones")(y)
+y = Conv1D(filters=1, kernel_size=3, dilation_rate=4, padding="causal", kernel_initializer="Ones")(y)
+z3 = y
 
-# y = Conv1D(filters=1, kernel_size=3, dilation_rate=4, padding="causal", kernel_initializer="Ones")(y)
-# y = Conv1D(filters=1, kernel_size=3, dilation_rate=4, padding="causal", kernel_initializer="Ones")(y)
-print(y + x)
-#
-y = TCN(nb_filters=1,
+print(z1 + z2 + z3)
+
+z = TCN(nb_filters=1,
         kernel_size=3,
         dilations=[1, 2, 4],
         kernel_initializer="Ones",
         return_sequences=True)(x)
-print(y)
+
+print(z)
 
 
-# print(c)
-# x = Attention(4)(a)
-None
+# x = np.arange(10).astype("float32").reshape([1, 10, 1])
+# y = x
+# y = Conv1D(filters=1, kernel_size=3, dilation_rate=1, padding="causal", kernel_initializer="Ones")(y)
+# y = Conv1D(filters=1, kernel_size=3, dilation_rate=1, padding="causal", kernel_initializer="Ones")(y)
+#
+# print(y + x)
 
 
 
 
-# t = torch.rand(1680)
-# t = torch.reshape(t, (1, 1, 10, 168))
-# d2l.show_heatmaps(t, 'x', 'y')
-# plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
