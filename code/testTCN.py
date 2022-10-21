@@ -34,6 +34,8 @@ y = Conv1D(filters=1, kernel_size=3, dilation_rate=4, padding="causal", kernel_i
 y = Conv1D(filters=1, kernel_size=3, dilation_rate=4, padding="causal", kernel_initializer="Ones")(y)
 z3 = y
 
+
+
 print(z1 + z2 + z3)
 
 z = TCN(nb_filters=1,
