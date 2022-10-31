@@ -9,11 +9,12 @@ import pandas as pd
 import sqlite3 as lite
 from os.path import basename
 from tcn import TCN, tcn_full_summary
+from PrototypeLayer import PrototypeLayer
 
 # 文件声明
 pathDataDB = "../data/dataset_db.db"    # 数据库文件
 
-step = 7       # 预测步长
+step = 1       # 预测步长
 host = ['0001', '0021', '0070', '0143', '0354', '0372']   #
 host2 = ['6707']    # 9783、9605、2636、1046、
 
@@ -47,10 +48,21 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
     # 构建网络
     model = Sequential()
-    model.add(TCN(1, kernel_size=3, dropout_rate=0.05, dilations=(1, 2, 4)))
-    model.add(Dense(1))
+    model.add(PrototypeLayer(filters=128,
+                   kernel_size=3,
+                   dilations=[1, 2, 4, 8, 16, 32],
+                   return_sequences=True,
+                   use_attention=True))
+    # model.add(Dense(1))
+
+    # model = Sequential()
+    # model.add(TCN(1, kernel_size=3, dilations=(1, 2, 4, 8), return_sequences=False))
+    # model.add(Dense(1))
+
     model.compile(loss='mse', optimizer='adam')
-    model.fit(trainX, trainY, epochs=5, batch_size=64, verbose=2)
+
+    model.fit(trainX, trainY, epochs=10, batch_size=64, verbose=2)
+    model.summary()
     # 对测试数据的Y进行预测
     testPre = model.predict(testX)
     # 整理

@@ -37,7 +37,7 @@ from keras.layers import Dense, Lambda, Dot, Activation, Concatenate, Layer
 debug_flag = int(os.environ.get('KERAS_ATTENTION_DEBUG', 0))
 
 
-class Attention2(object if debug_flag else Layer):
+class Attention2(Layer): # object if debug_flag else Layer
 
     def __init__(self, units=128, **kwargs):
         super(Attention2, self).__init__(**kwargs)
@@ -54,18 +54,18 @@ class Attention2(object if debug_flag else Layer):
             self.context_vector = Dot(axes=[1, 1], name='context_vector')
             self.attention_output = Concatenate(name='attention_output')
             self.attention_vector = Dense(self.units, use_bias=False, activation='tanh', name='attention_vector', kernel_initializer="Ones")
-        if not debug_flag:
-            # debug: the call to build() is done in call().
-            super(Attention2, self).build(input_shape)
+        # if not debug_flag:
+        #     # debug: the call to build() is done in call().
+        #     super(Attention2, self).build(input_shape)
 
-    def compute_output_shape(self, input_shape):
-        return input_shape[0], self.units
+    # def compute_output_shape(self, input_shape):
+    #     return input_shape[0], self.units
 
-    def __call__(self, inputs, training=None, **kwargs):
-        if debug_flag:
-            return self.call(inputs, training, **kwargs)
-        else:
-            return super(Attention2, self).__call__(inputs, training, **kwargs)
+    # def __call__(self, inputs, training=None, **kwargs):
+    #     if debug_flag:
+    #         return self.call(inputs, training, **kwargs)
+    #     else:
+    #         return super(Attention2, self).__call__(inputs, training, **kwargs)
 
     # noinspection PyUnusedLocal
     def call(self, inputs, training=None, **kwargs):
@@ -76,8 +76,8 @@ class Attention2(object if debug_flag else Layer):
         @return: 2D tensor with shape (batch_size, units)
         @author: felixhao28, philipperemy.
         """
-        if debug_flag:
-            self.build(inputs.shape)
+        # if debug_flag:
+        #     self.build(inputs.shape)
         # Inside dense layer
         #              hidden_states            dot               W            =>           score_first_part
         # (batch_size, time_steps, hidden_size) dot (hidden_size, hidden_size) => (batch_size, time_steps, hidden_size)
@@ -94,14 +94,14 @@ class Attention2(object if debug_flag else Layer):
         attention_vector = self.attention_vector(pre_activation)
         return attention_vector
 
-    def get_config(self):
-        """
-        Returns the config of a the layer. This is used for saving and loading from a model
-        :return: python dictionary with specs to rebuild layer
-        """
-        config = super(Attention2, self).get_config()
-        config.update({'units': self.units})
-        return config
+    # def get_config(self):
+    #     """
+    #     Returns the config of a the layer. This is used for saving and loading from a model
+    #     :return: python dictionary with specs to rebuild layer
+    #     """
+    #     config = super(Attention2, self).get_config()
+    #     config.update({'units': self.units})
+    #     return config
 
 
 
@@ -109,24 +109,24 @@ class Attention2(object if debug_flag else Layer):
 
 
 
-
-
-x = np.arange(6, 18).astype('float32').reshape([1, 6, 2])
-
-a1 = Dense(int(x.shape[-1]), use_bias=False, kernel_initializer="Ones")(x)
-a2 = Lambda(lambda x: x[:, -1, :], output_shape=(int(x.shape[-1]), ))(x)
-a3 = Dot(axes=[1, 2])([a2, a1])
-a4 = Activation('softmax')(a3)
-a5 = Dot(axes=[1, 1])([x, a4])
-a6 = Concatenate()([a5, a2])
-y = Dense(1, use_bias=False, activation='tanh', kernel_initializer="Ones")(a6)
-
-print(y)
-
-
-z = Attention2(1)(x)
-
-print(z)
+#
+#
+# x = np.arange(6, 18).astype('float32').reshape([1, 6, 2])
+#
+# a1 = Dense(int(x.shape[-1]), use_bias=False, kernel_initializer="Ones")(x)
+# a2 = Lambda(lambda x: x[:, -1, :], output_shape=(int(x.shape[-1]), ))(x)
+# a3 = Dot(axes=[1, 2])([a2, a1])
+# a4 = Activation('softmax')(a3)
+# a5 = Dot(axes=[1, 1])([x, a4])
+# a6 = Concatenate()([a5, a2])
+# y = Dense(1, use_bias=False, activation='tanh', kernel_initializer="Ones")(a6)
+#
+# print(y)
+#
+#
+# z = Attention2(1)(x)
+#
+# print(z)
 
 
 
