@@ -43,7 +43,8 @@ class PrototypeLayer(Layer):
                            kernel_size=self.kernel_size,
                            dilation_rate=d,
                            padding="causal",
-                           kernel_initializer=self.kernel_initializer)
+                           kernel_initializer=self.kernel_initializer,
+                           use_bias=False)
             if self.use_weight_norm:
                 layer = WeightNormalization(layer)
             self.medLayers.append(layer)
@@ -51,7 +52,8 @@ class PrototypeLayer(Layer):
                            kernel_size=self.kernel_size,
                            dilation_rate=d,
                            padding="causal",
-                           kernel_initializer=self.kernel_initializer)
+                           kernel_initializer=self.kernel_initializer,
+                           use_bias=False)
             if self.use_weight_norm:
                 layer = WeightNormalization(layer)
             self.medLayers.append(layer)
@@ -79,7 +81,7 @@ class PrototypeLayer(Layer):
 
         if (self.return_sequences is False) or (not self.use_attention): # 不用Attention
             return self.addLayer(layersOutputs)
-        else:   # 用Attention
+        else:   # 用Attention, return_sequences==True才有意义
             attenInput = self.concatLayer(layersOutputs)
             attenInput = tf.transpose(attenInput, [0, 2, 1])
             return self.attentionLayer(attenInput)

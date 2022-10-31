@@ -52,16 +52,18 @@ if __name__ == '__main__':
                    kernel_size=3,
                    dilations=[1, 2, 4, 8, 16, 32],
                    return_sequences=True,
-                   use_attention=True))
-    # model.add(Dense(1))
+                   use_attention=True,
+                   dropout_rate=0.4,
+                   use_weight_norm=True))
+    model.add(Dense(1))
 
     # model = Sequential()
     # model.add(TCN(1, kernel_size=3, dilations=(1, 2, 4, 8), return_sequences=False))
     # model.add(Dense(1))
 
-    model.compile(loss='mse', optimizer='adam')
+    model.compile(loss='mse', optimizer='rmsprop')
 
-    model.fit(trainX, trainY, epochs=10, batch_size=64, verbose=2)
+    model.fit(trainX, trainY, epochs=2000, batch_size=64, verbose=2)
     model.summary()
     # 对测试数据的Y进行预测
     testPre = model.predict(testX)

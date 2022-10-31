@@ -22,35 +22,49 @@ import tensorflow as tf
 from PrototypeLayer import PrototypeLayer
 from keras import backend as K
 
-# x = np.arange(10).astype("float32").reshape([1, 5, 2])
-# x = tf.convert_to_tensor(x)
-# print(x)
-#
-#
+x = np.arange(10).astype("float32").reshape([1, 5, 2])
+x = tf.convert_to_tensor(x)
+print(x)
+
+
+
+y = Conv1D(filters=1, kernel_size=3, padding="causal", dilation_rate=1, kernel_initializer="Ones", )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # y = tf.transpose(x, [0, 2, 1])
 #
 # print(y)
 
 
-x = np.arange(10).astype("float32").reshape([1, 10, 1]) - 4.5
-print(x)
-
-y = PrototypeLayer(filters=2,
-                   kernel_size=3,
-                   dilations=[1, 2, 4],
-                   dropout_rate=0,
-                   use_weight_norm=False,
-                   kernel_initializer="Ones",
-                   return_sequences=True,
-                   use_attention=True)(x)
-print(y)
-
-z = TCN(nb_filters=2, kernel_size=3, dilations=[1, 2, 4], kernel_initializer="Ones", return_sequences=False)(x)
-print(z)
-
-
-
-
+# x = np.arange(10).astype("float32").reshape([1, 10, 1]) - 4.5
+# print(x)
+#
+# y = PrototypeLayer(filters=2,
+#                    kernel_size=3,
+#                    dilations=[1, 2, 4],
+#                    dropout_rate=0,
+#                    use_weight_norm=False,
+#                    kernel_initializer="Ones",
+#                    return_sequences=True,
+#                    use_attention=True)(x)
+# print(y)
+#
+# z = TCN(nb_filters=2, kernel_size=3, dilations=[1, 2, 4], kernel_initializer="Ones", return_sequences=False)(x)
+# print(z)
+#
+# tf.nn.convolution
 
 
 
@@ -75,9 +89,6 @@ print(z)
 
 # print(c)
 # x = Attention(4)(a)
-None
-
-
 
 
 # t = torch.rand(1680)
