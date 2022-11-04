@@ -20,16 +20,61 @@ from attention import Attention
 from tcn import TCN, tcn_full_summary
 import tensorflow as tf
 from PrototypeLayer import PrototypeLayer
+from PrototypeLayerII import PrototypeLayerII
+from PrototypeLayerIII import PrototypeLayerIII
 from keras import backend as K
 
-x = np.arange(10).astype("float32").reshape([1, 5, 2])
-x = tf.convert_to_tensor(x)
-print(x)
+x = np.arange(5).astype("float32").reshape([1, 5, 1])
+
+y = PrototypeLayer(filters=3,
+                   kernel_size=3,
+                   dilations=[1, 2, 4, 8, 16, 32],
+                   return_sequences=True,
+                   use_attention=True,
+                   dropout_rate=0.4,
+                   use_weight_norm=True)(x)
+print(y)
+
+# def DoMul(input, k, d):
+#     time = input.shape[1]
+#     depth = input.shape[2]
+#     k_size = k.shape[0]
+#     addLines = (k_size - 1) * d
+#     z = np.zeros(addLines * depth).astype("float32").reshape([1, addLines, depth])
+#     z_input = K.concatenate([z, input], axis=1)
+#     result = []
+#     for i in range(time):
+#         y = 0
+#         for j in range(k_size):
+#             y += np.vdot(k[j, :], z_input[:, i - d * (k_size - j - 1) + addLines, :])
+#         result.append(y)
+#     result = np.array(result).reshape([1, len(result), 1])
+#     return tf.convert_to_tensor(result)
+
+# x = np.arange(5).astype("float32").reshape([1, 5, 1])
+# x = tf.convert_to_tensor(x)
+# print(x)
+#
+# print(tf.multiply(x, x))
+# print(np.vdot(x, x))
 
 
 
-y = Conv1D(filters=1, kernel_size=3, padding="causal", dilation_rate=1, kernel_initializer="Ones", )
+# k = np.ones(6).astype("float32").reshape([3, 2])
+# k = tf.convert_to_tensor(k)
+# print(k)
 
+# y = PrototypeLayerII(filters=1, kernel_size=3, dilations=[1, 2, 4, 8], kernel_initializer="Ones")(x)
+# print(y)
+#
+# y2 = TCN(nb_filters=1, kernel_size=3, dilations=[1, 2, 4, 8], kernel_initializer="Ones", return_sequences=True)(x)
+# print(y2)
+
+#
+# y1 = Conv1D(filters=3, kernel_size=4, padding="causal", dilation_rate=2, kernel_initializer="Ones")(x)
+# y2 = PrototypeLayerIII(filters=3, kernel_size=4, dilation_rate=2, kernel_initializer="Ones")(x)
+# print(y1)
+# print(y2)
 
 
 
