@@ -49,8 +49,8 @@ if __name__ == '__main__':
     name = "TCN+LSTM_d(1,2)"
     model = Sequential()
     model.add(TCN(nb_filters=64, kernel_size=5, dropout_rate=0.1, dilations=(1, 2), return_sequences=True))
-    model.add(LSTM(128, return_sequences=True))
-    model.add(LSTM(128, return_sequences=False))
+    model.add(LSTM(48, return_sequences=True))
+    model.add(LSTM(32, return_sequences=False))
     model.add(Dense(1))
     model.compile(loss='mse', optimizer='adam')
     model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=1)
