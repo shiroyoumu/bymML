@@ -21,19 +21,49 @@ from tcn import TCN, tcn_full_summary
 import tensorflow as tf
 from PrototypeLayer import PrototypeLayer
 from PrototypeLayerII import PrototypeLayerII
-from PrototypeLayerIII import PrototypeLayerIII
 from keras import backend as K
+import xgboost
+from xgboost import XGBClassifier
+from functions import ScaleData
 
-x = np.arange(5).astype("float32").reshape([1, 5, 1])
+import xgboost
+# First XGBoost model for Pima Indians dataset
+from numpy import loadtxt
+from xgboost import XGBClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
-y = PrototypeLayer(filters=3,
-                   kernel_size=3,
-                   dilations=[1, 2, 4, 8, 16, 32],
-                   return_sequences=True,
-                   use_attention=True,
-                   dropout_rate=0.4,
-                   use_weight_norm=True)(x)
-print(y)
+# load data
+dataset = loadtxt('../data/pima-indians-diabetes.csv', delimiter=",")
+# split data into X and y
+X = dataset[:,0:8]
+Y = dataset[:,8]
+# split data into train and test sets
+seed = 7
+test_size = 0.33
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=test_size, random_state=seed)
+# fit model no training data
+model = XGBClassifier()
+model.fit(X_train, y_train)
+# make predictions for test data
+y_pred = model.predict(X_test)
+predictions = [round(value) for value in y_pred]
+# evaluate predictions
+accuracy = accuracy_score(y_test, predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+
+
+
+# x = np.arange(5).astype("float32").reshape([1, 5, 1])
+#
+# y = PrototypeLayer(filters=3,
+#                    kernel_size=3,
+#                    dilations=[1, 2, 4, 8, 16, 32],
+#                    return_sequences=True,
+#                    use_attention=True,
+#                    dropout_rate=0.4,
+#                    use_weight_norm=True)(x)
+# print(y)
 
 # def DoMul(input, k, d):
 #     time = input.shape[1]
@@ -75,10 +105,6 @@ print(y)
 # y2 = PrototypeLayerIII(filters=3, kernel_size=4, dilation_rate=2, kernel_initializer="Ones")(x)
 # print(y1)
 # print(y2)
-
-
-
-
 
 
 

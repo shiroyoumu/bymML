@@ -22,7 +22,7 @@ def CollectTrainData(con, host) -> ndarray:
     return dataset
 
 
-def CollectData(dataset, step) -> Tuple[ndarray, ndarray]:
+def CollectData(dataset, step: int) -> Tuple[ndarray, ndarray]:
     '''
     将数据序列dataset按step划分为输入和标签
 
@@ -49,7 +49,7 @@ def CollectData(dataset, step) -> Tuple[ndarray, ndarray]:
     return np.array(dataX), np.array(dataY)
 
 
-def SelectHosts(hosts, rate, seed) -> Tuple[List, List]:
+def SelectHosts(hosts, rate: float, seed: int) -> Tuple[List, List]:
     '''
     选取训练和测试的主机
 
@@ -64,3 +64,24 @@ def SelectHosts(hosts, rate, seed) -> Tuple[List, List]:
     host1 = hosts[:flag]
     host2 = hosts[flag:]
     return host1, host2
+
+
+def SmoothSet(data, range: int , d: float) -> ndarray:
+    for i in data[:, 0]:
+        if (np.max(data[i - range:i + range, 0]) + d) < data[i, 0]:
+            data[i, 0] -= d
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
