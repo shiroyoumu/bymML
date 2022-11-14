@@ -66,10 +66,14 @@ def SelectHosts(hosts, rate: float, seed: int) -> Tuple[List, List]:
     return host1, host2
 
 
-def SmoothSet(data, range: int , d: float) -> ndarray:
-    for i in data[:, 0]:
-        if (np.max(data[i - range:i + range, 0]) + d) < data[i, 0]:
-            data[i, 0] -= d
+def SmoothSet(data, scope: int, d: float) -> ndarray:
+    result = data
+    i = scope
+    while i <= result[:, 0].shape[0] - scope:
+        if (np.max(np.hstack((result[i - scope:i, 0], result[i + 1:i + scope + 1, 0]))) + d) < result[i, 0]:
+            result[i, 0] -= d
+        i += 1
+    return result
 
 
 

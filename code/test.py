@@ -7,6 +7,7 @@ from os.path import basename
 import torch.nn as nn
 from d2l import torch as d2l
 import os
+import sqlite3 as lite
 import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Reshape
@@ -24,33 +25,69 @@ from PrototypeLayerII import PrototypeLayerII
 from keras import backend as K
 import xgboost
 from xgboost import XGBClassifier
-from functions import ScaleData
+from functions import *
 
-import xgboost
-# First XGBoost model for Pima Indians dataset
-from numpy import loadtxt
-from xgboost import XGBClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
 
-# load data
-dataset = loadtxt('../data/pima-indians-diabetes.csv', delimiter=",")
-# split data into X and y
-X = dataset[:,0:8]
-Y = dataset[:,8]
-# split data into train and test sets
-seed = 7
-test_size = 0.33
-X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=test_size, random_state=seed)
-# fit model no training data
-model = XGBClassifier()
-model.fit(X_train, y_train)
-# make predictions for test data
-y_pred = model.predict(X_test)
-predictions = [round(value) for value in y_pred]
-# evaluate predictions
-accuracy = accuracy_score(y_test, predictions)
-print("Accuracy: %.2f%%" % (accuracy * 100.0))
+# a = np.array([1,2,80,2,3,1,4,50,10,3,1,2]).reshape((12, 1))
+#
+# plt.plot(a)
+# b = SmoothSet(a, 2, 20)
+# plt.plot(b)
+# plt.show()
+
+
+hosts = ['host0001', 'host0021', 'host0354']
+
+
+pathDataDB = "../data/dataset_db.db"    # 数据库文件
+con = lite.connect(pathDataDB)
+
+data = CollectTrainData(con, ['host0001', 'host0021'])
+plt.plot(data)
+b = SmoothSet(data, 1, 20)
+
+plt.plot(b)
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import xgboost
+# # First XGBoost model for Pima Indians dataset
+# from numpy import loadtxt
+# from xgboost import XGBClassifier
+# from sklearn.model_selection import train_test_split
+# from sklearn.metrics import accuracy_score
+#
+# # load data
+# dataset = loadtxt('../data/pima-indians-diabetes.csv', delimiter=",")
+# # split data into X and y
+# X = dataset[:,0:8]
+# Y = dataset[:,8]
+# # split data into train and test sets
+# seed = 7
+# test_size = 0.33
+# X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=test_size, random_state=seed)
+# # fit model no training data
+# model = XGBClassifier()
+# model.fit(X_train, y_train)
+# # make predictions for test data
+# y_pred = model.predict(X_test)
+# predictions = [round(value) for value in y_pred]
+# # evaluate predictions
+# accuracy = accuracy_score(y_test, predictions)
+# print("Accuracy: %.2f%%" % (accuracy * 100.0))
 
 
 
