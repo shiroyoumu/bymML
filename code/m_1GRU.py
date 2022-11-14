@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+
+from keras import regularizers
 from keras.models import Sequential
 from keras.layers import *
 from sklearn.metrics import *
@@ -45,7 +47,7 @@ if __name__ == '__main__':
     # 构建网络
     name = "1GRU_2"
     model = Sequential()
-    model.add(GRU(168, return_sequences=False))
+    model.add(GRU(168, dropout=0.1, recurrent_regularizer=regularizers.l2(0.01), return_sequences=False))
     model.add(Dense(1))
     model.compile(loss='mse', optimizer='adam')
     model.fit(trainX, trainY, epochs=50, batch_size=64, verbose=1)
