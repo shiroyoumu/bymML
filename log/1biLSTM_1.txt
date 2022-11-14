@@ -2,18 +2,22 @@ Model: "sequential"
 _________________________________________________________________
  Layer (type)                Output Shape              Param #   
 =================================================================
- gru (GRU)                   (None, 168)               86184     
+ bidirectional (Bidirectiona  (None, 336)              228480    
+ l)                                                              
                                                                  
- dense (Dense)               (None, 1)                 169       
+ dense (Dense)               (None, 1)                 337       
                                                                  
 =================================================================
-Total params: 86,353
-Trainable params: 86,353
+Total params: 228,817
+Trainable params: 228,817
 Non-trainable params: 0
 _________________________________________________________________
-MSE = 38.0760
-RMSE = 6.1706
-SSE = 6396493.1729
-MAE = 2.4503
-MAPE = 63262609408.0000
-R2 = 0.8916
+MSE = 38.0195
+RMSE = 6.1660
+SSE = 6387008.7049
+MAE = 2.3011
+MAPE = 40419487744.0000
+R2 = 0.8918
+
+step = 7
+rate = 0.9

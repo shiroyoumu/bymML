@@ -2,3 +2,5 @@ data
 data/dataset.csv
 data/dataset_db.db
 .idea
+.idea/0bym_ML.iml
+.idea/misc.xml
