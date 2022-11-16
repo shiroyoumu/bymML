@@ -13,7 +13,7 @@ from tcn import TCN, tcn_full_summary
 import os
 import random
 import tensorflow as tf
-from functions import CollectTrainData, CollectData, SelectHosts
+from functions import *
 
 # 文件声明
 pathDataDB = "../data/dataset_db.db"    # 数据库文件
@@ -37,6 +37,10 @@ if __name__ == '__main__':
     con = lite.connect(pathDataDB)
     trainSet = CollectTrainData(con, host1)
     testSet = CollectTrainData(con, host2)
+    # =================================
+    trainSet = SmoothSet(trainSet, 1, 30)
+    testSet = SmoothSet(testSet, 1, 30)
+    # =================================
     # 制作数据
     trainX, trainY = CollectData(trainSet, step)
     testX, testY = CollectData(testSet, step)
@@ -45,7 +49,7 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 
     # 构建网络
-    name = "TCN_2"
+    name = "TCN_2s"
     model = Sequential()
     model.add(TCN(nb_filters=64, kernel_size=5, dropout_rate=0.1, dilations=(1, 2, 4, 8, 16, 32)))
     model.add(Dense(1))

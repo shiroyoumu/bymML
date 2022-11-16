@@ -67,6 +67,16 @@ def SelectHosts(hosts, rate: float, seed: int) -> Tuple[List, List]:
 
 
 def SmoothSet(data, scope: int, d: float) -> ndarray:
+    '''
+    降低部分峰值
+
+    对于序列内的某一个数据值，如果在[-scope, +scope]去心邻域内的最大值都要比它大d，则把该数据值设置为去心邻域内的最大值。
+
+    :param data: 数据序列
+    :param scope: 采样范围
+    :param d: 差值
+    :return: 处理后序列
+    '''
     result = data
     i = scope
     while i <= result[:, 0].shape[0] - scope:
