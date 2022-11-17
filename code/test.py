@@ -2,10 +2,10 @@ import numpy
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import torch
+# import torch
 from os.path import basename
-import torch.nn as nn
-from d2l import torch as d2l
+# import torch.nn as nn
+# from d2l import torch as d2l
 import os
 import sqlite3 as lite
 import numpy as np
@@ -14,10 +14,10 @@ from keras.layers import Dense, Activation, Reshape
 from keras.layers import *
 from keras import initializers
 from keras.models import Model
-import graphviz
+# import graphviz
 from sklearn.metrics import *
 import math
-from attention import Attention
+# from attention import Attention
 from tcn import TCN, tcn_full_summary
 import tensorflow as tf
 from PrototypeLayer import PrototypeLayer
@@ -28,6 +28,19 @@ from xgboost import XGBClassifier
 from functions import *
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 # a = np.array([1,2,80,2,3,1,4,50,10,3,1,2]).reshape((12, 1))
 #
 # plt.plot(a)
@@ -35,19 +48,19 @@ from functions import *
 # plt.plot(b)
 # plt.show()
 
-
-hosts = ['host0001', 'host0021', 'host0354']
-
-
-pathDataDB = "../data/dataset_db.db"    # 数据库文件
-con = lite.connect(pathDataDB)
-
-data = CollectTrainData(con, ['host0001', 'host0021'])
-plt.plot(data)
-b = SmoothSet(data, 1, 20)
-
-plt.plot(b)
-plt.show()
+#
+# hosts = ['host0001', 'host0021', 'host0354']
+#
+#
+# pathDataDB = "../data/dataset_db.db"    # 数据库文件
+# con = lite.connect(pathDataDB)
+#
+# data = CollectTrainData(con, ['host0001', 'host0021'])
+# plt.plot(data)
+# b = SmoothSet(data, 1, 20)
+#
+# plt.plot(b)
+# plt.show()
 
 
 
