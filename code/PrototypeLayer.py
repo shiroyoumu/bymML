@@ -4,7 +4,7 @@ from tensorflow_addons.layers import WeightNormalization
 from keras import backend as K, Input, Model
 from keras.layers import Layer, Conv1D, Dropout, Add, Concatenate, Lambda
 import numpy as np
-from attention import Attention
+# from attention import Attention
 import tensorflow as tf
 
 

@@ -28,7 +28,17 @@ from xgboost import XGBClassifier
 from functions import *
 
 
+path = "../data/l.csv"
+data = pd.read_csv(path)
+list = list(data['Unnamed: 0'])
+print(len(list))
+list2 = []
+for i in list:
+    list2.append("" + i)
+print(len(list2))
+print(list2)
 
+None
 
 
 
