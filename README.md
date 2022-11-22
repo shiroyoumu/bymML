@@ -41,6 +41,7 @@ contrast
 ~~**PrototypeLayerII**：1dConv with L's attention~~
 
 
+孤立森林
 
 增大batch size
 [//]: # (要cpu、内存)
