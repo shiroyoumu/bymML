@@ -15,7 +15,7 @@ series = ["cpuusagebyproc", "memoryallocatedbyproc"]
 
 con = lite.connect(pathDataDB)
 
-df = df2 = pd.read_sql("select Mean from datasetDB_new where hostname='{}' and series='{}'".format("host0492", "cpuusagebyproc"), con)
+df = df2 = pd.read_sql("select Mean from datasetDB_new where hostname in {} and series='{}'".format("('host0492', 'host0021')", "cpuusagebyproc"), con)
 df = df.fillna(-100.0)
 
 model = IsolationForest(n_estimators=100,

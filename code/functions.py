@@ -4,9 +4,10 @@ import numpy as np
 import pandas as pd
 from numpy import ndarray
 import random
+from enum import Enum
 
 
-def CollectTrainData(con, host) -> ndarray:
+def CollectTrainData(con, host) -> pd.DataFrame:
     '''
 
     从数据库收集数据
@@ -98,6 +99,38 @@ def SmoothSet(data, scope: int, d: float) -> ndarray:
             result[i, 0] -= d
         i += 1
     return result
+
+
+def HandleNoise(data):
+
+    return None
+
+
+def HandleMissing(data):
+    return None
+
+
+class CompleteMethod(Enum):
+    OneNum = 0  # 单数字填充
+    Lerp = 1    # 线性插值
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
