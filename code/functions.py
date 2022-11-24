@@ -49,6 +49,20 @@ def CollectData(dataset, step: int) -> Tuple[ndarray, ndarray]:
     return np.array(dataX), np.array(dataY)
 
 
+def CollectData2(dataset, step: int, length: int):
+    hostNum = dataset.shape[0] / length # 总条目/每个主机条目=主机数
+    if (hostNum * 10) % 10 != 0:
+        raise ValueError("dataset条数与length条数不符")
+
+    dataX, dataY = [], []
+    for i in range(int(hostNum)):
+        hostList = dataset[(i * length):((i + 1) * length), :]
+        for j in range(len(hostList) - step):
+            dataX.append(hostList[j:(j + step), 0])
+            dataY.append(hostList[j + step, 0])
+    return np.array(dataX), np.array(dataY)
+
+
 def SelectHosts(hosts, rate: float, seed: int) -> Tuple[List, List]:
     '''
     选取训练和测试的主机
@@ -84,7 +98,6 @@ def SmoothSet(data, scope: int, d: float) -> ndarray:
             result[i, 0] -= d
         i += 1
     return result
-
 
 
 

@@ -20,7 +20,7 @@ pathDataDB = "../data/dataset_db.db"    # 数据库文件
 pathLog = "../log/{}.{}"    # 输出结果
 
 seed = 3    # 随机种子
-step = 168    # 预测步长
+step = 7    # 预测步长
 rate = 0.9  # 分割率
 
 # cpu only
@@ -43,10 +43,17 @@ if __name__ == '__main__':
     con = lite.connect(pathDataDB)
     trainSet = CollectTrainData(con, host1)
     testSet = CollectTrainData(con, host2)
-    # =================================
-    trainSet = SmoothSet(trainSet, 1, 30)
-    testSet = SmoothSet(testSet, 1, 30)
-    # =================================
+    # 制作数据
+    trainX, trainY = CollectData2(trainSet, step, 1680)
+    print(123)
+
+
+
+
+    # # =================================
+    # trainSet = SmoothSet(trainSet, 1, 30)
+    # testSet = SmoothSet(testSet, 1, 30)
+    # # =================================
     # 制作数据
     trainX, trainY = CollectData(trainSet, step)
     testX, testY = CollectData(testSet, step)
