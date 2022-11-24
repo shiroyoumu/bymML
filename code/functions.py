@@ -19,7 +19,7 @@ def CollectTrainData(con, host) -> pd.DataFrame:
     print("Loading data from DB...")
     dataset = pd.read_sql("select Mean from datasetDB where hostname in {}".format(str(tuple(host))), con)
     dataset = dataset.values.astype("float32")
-    print("Done")
+    # print("Done")
     return dataset
 
 
