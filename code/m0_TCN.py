@@ -18,7 +18,7 @@ from enum import Enum
 
 # 文件声明
 pathDataDB = "../data/dataset_db_new.db"    # 数据库文件
-pathLog = "../log/{}.{}"    # 输出结果
+pathLog = "../log2/{}.{}"    # 输出结果
 itemNum = 1924
 
 seed = 3    # 随机种子
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 
     # 构建网络
-    name = "0_TCN_2s"
+    name = "TCN"
     model = Sequential()
     model.add(TCN(nb_filters=64, kernel_size=5, dropout_rate=0.1, dilations=(1, 2, 4, 8, 16, 32)))
     model.add(Dense(1))
