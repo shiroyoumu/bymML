@@ -19,6 +19,7 @@ from enum import Enum
 # 文件声明
 pathDataDB = "../data/dataset_db_new.db"    # 数据库文件
 pathLog = "../log/{}.{}"    # 输出结果
+itemNum = 1924
 
 seed = 3    # 随机种子
 step = 7    # 预测步长
@@ -42,26 +43,17 @@ if __name__ == '__main__':
     host1, host2 = SelectHosts(hosts, rate, seed)   # 1训练 2测试
     # 加载数据
     con = lite.connect(pathDataDB)
-    trainSet = CollectTrainData(con, host1)
-    testSet = CollectTrainData(con, host2)
+    trainSet = CollectTrainData(con, host1, itemNum)
+    testSet = CollectTrainData(con, host2, itemNum)
     # 异常处理
-    # trainSet2 =
+    trainSet2 = HandleNoise(trainSet, 1, 5000, 0.05)
+    testSet2 = HandleNoise(testSet, 1, 5000, 0.05)
     # 缺失补全
-
+    trainSet3 = HandleMissing(trainSet2, CompleteMethod.Lerp, 0)
+    testSet3 = HandleMissing(testSet2, CompleteMethod.Lerp, 0)
     # 制作数据
-    trainX, trainY = CollectData2(trainSet, step, 1680)
-    print(123)
-
-
-
-
-    # # =================================
-    # trainSet = SmoothSet(trainSet, 1, 30)
-    # testSet = SmoothSet(testSet, 1, 30)
-    # # =================================
-    # 制作数据
-    trainX, trainY = CollectData(trainSet, step)
-    testX, testY = CollectData(testSet, step)
+    trainX, trainY = CollectAllData(trainSet3, step)
+    testX, testY = CollectAllData(testSet3, step)
     # 整理格式
     trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))

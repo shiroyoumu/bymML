@@ -20,25 +20,33 @@ import math
 # from attention import Attention
 from tcn import TCN, tcn_full_summary
 import tensorflow as tf
-from PrototypeLayer import PrototypeLayer
-from PrototypeLayerII import PrototypeLayerII
+
 from keras import backend as K
 import xgboost
 from xgboost import XGBClassifier
 from functions import *
 
+import numpy as np
+a=np.array([[1,np.nan,3,4],[np.nan,np.nan,5,6]]);
+a[np.where(np.isnan(a))]=777
 
-path = "../data/l.csv"
-data = pd.read_csv(path)
-list = list(data['Unnamed: 0'])
-print(len(list))
-list2 = []
-for i in list:
-    list2.append("" + i)
-print(len(list2))
-print(list2)
+print(a)
 
-None
+
+
+
+
+# path = "../data/l.csv"
+# data = pd.read_csv(path)
+# list = list(data['Unnamed: 0'])
+# print(len(list))
+# list2 = []
+# for i in list:
+#     list2.append("" + i)
+# print(len(list2))
+# print(list2)
+#
+# None
 
 
 
