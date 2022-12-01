@@ -27,6 +27,16 @@ import xgboost
 from xgboost import XGBClassifier
 from functions import *
 
+
+a = np.arange(20).astype("float32").reshape([1, 20, 1])
+# b = Lambda(lambda x: x[:, -7:, :])(a)
+
+
+a = np.full((3, 3), np.nan)
+print(a)
+
+
+
 # import numpy as np
 # a=np.array([[1,np.nan,3,4],[np.nan,np.nan,5,6]]);
 # a[np.where(np.isnan(a))]=777
@@ -58,24 +68,24 @@ from functions import *
 
 
 
-font = font_manager.FontProperties(fname='C:/Windows/Fonts/msyh.ttc')
-
-a = np.array([1,2,80,2,3,1,4,50,10,3,
-              1,2,5,60,12,3,1,2,12,24,
-              30,5,9,21,35,19,13]).reshape((27, 1))
-
-
-plt.plot(a, label='原始序列')
-
-# plt.plot(a, label='a')
-b = SmoothSet(a, 2, 20)
-plt.plot(b, label='平滑后序列')
-# plt.plot(b, label='b')
-plt.xlabel('时间步长',fontproperties='SimHei')
-plt.ylabel('指标数值',fontproperties='SimHei')
-
-plt.legend(prop=font)
-plt.show()
+# font = font_manager.FontProperties(fname='C:/Windows/Fonts/msyh.ttc')
+#
+# a = np.array([1,2,80,2,3,1,4,50,10,3,
+#               1,2,5,60,12,3,1,2,12,24,
+#               30,5,9,21,35,19,13]).reshape((27, 1))
+#
+#
+# plt.plot(a, label='原始序列')
+#
+# # plt.plot(a, label='a')
+# b = SmoothSet(a, 2, 20)
+# plt.plot(b, label='平滑后序列')
+# # plt.plot(b, label='b')
+# plt.xlabel('时间步长',fontproperties='SimHei')
+# plt.ylabel('指标数值',fontproperties='SimHei')
+#
+# plt.legend(prop=font)
+# plt.show()
 
 #
 # hosts = ['host0001', 'host0021', 'host0354']

@@ -37,17 +37,18 @@ class Completion:
         return data
 
 
-def CollectTrainData(con, host: list, length: int) -> np.ndarray:
+def CollectTrainData(con, host: list, series: list, length: int) -> np.ndarray:
     '''
     从数据库收集数据
 
     :param con: 数据库控制器
     :param host: 主机列表
+    :param series: 指标列表
     :param length: 每台主机数据条目
     :return: 数据矩阵（时间，主机）
     '''
     print("Loading data from DB...")
-    dataset = pd.read_sql("select Mean from datasetDB_new where hostname in {}".format(str(tuple(host))), con)
+    dataset = pd.read_sql("select Mean from datasetDB_new where hostname in {} and series in {}".format(str(tuple(host)), str(tuple(series))), con)
     dataset = dataset.values.astype("float32")
     hostNum = dataset.shape[0] / length  # 总条目/每个主机条目=主机数
     if (hostNum * 10) % 10 != 0:
