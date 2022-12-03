@@ -62,14 +62,19 @@ if __name__ == '__main__':
     testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 
     # 构建网络
-    name = "TCN+LSTM"
-    input_tcn = Input(shape=(step_tcn, 1))
-    input_lstm = Lambda(lambda x: x[:, - step_lstm:, :])(input_tcn)
-    y1 = TCN(nb_filters=64, kernel_size=5, dropout_rate=0.2, dilations=(1, 2, 4))(input_tcn)
-    y2 = LSTM(64)(input_lstm)
-    y = Add()([y1, y2])
-    y = Dense(1)(y)
-    model = Model(inputs=input_tcn, outputs=y)
+    # name = "TCN+LSTM"
+    # input_tcn = Input(shape=(step_tcn, 1))
+    # input_lstm = Lambda(lambda x: x[:, - step_lstm:, :])(input_tcn)
+    # y1 = TCN(nb_filters=64, kernel_size=5, dropout_rate=0.2, dilations=(1, 2, 4))(input_tcn)
+    # y2 = LSTM(64)(input_lstm)
+    # y = Add()([y1, y2])
+    # y = Dense(1)(y)
+    # model = Model(inputs=input_tcn, outputs=y)
+
+    name = "TCN"
+    model = Sequential()
+    model.add(TCN(nb_filters=64, kernel_size=5, dropout_rate=0.2, dilations=(1, 2, 4)))
+    model.add(Dense(1))
 
 
     model.compile(loss='mse', optimizer='adam')
